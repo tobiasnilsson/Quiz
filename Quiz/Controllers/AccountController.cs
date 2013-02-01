@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
+using Quiz.Web.Filters;
+using Quiz.Web.Models;
 using WebMatrix.WebData;
-using Quiz.Filters;
-using Quiz.Models;
 
-namespace Quiz.Controllers
+namespace Quiz.Web.Controllers
 {
     [Authorize]
     [InitializeSimpleMembership]

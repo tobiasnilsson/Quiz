@@ -5,7 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quiz;
-using Quiz.Controllers;
+using Quiz.Web.Controllers;
 
 namespace Quiz.Tests.Controllers
 {
