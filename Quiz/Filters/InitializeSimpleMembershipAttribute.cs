@@ -38,7 +38,7 @@ namespace Quiz.Web.Filters
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("UserDB", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection("OneDBToRuleThemAll", "UserProfile", "UserId", "UserName", autoCreateTables: true);
                 }
                 catch (Exception ex)
                 {

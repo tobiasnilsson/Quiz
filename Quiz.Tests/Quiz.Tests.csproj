@@ -104,9 +104,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Quiz\Quiz.csproj">
+    <ProjectReference Include="..\Quiz\Quiz.Web.csproj">
       <Project>{93A3F6C5-5A66-45EC-9531-2F2BA8B556B8}</Project>
-      <Name>Quiz</Name>
+      <Name>Quiz.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

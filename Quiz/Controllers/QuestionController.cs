@@ -1,7 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using Quiz.Domain;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Quiz.Web.Controllers
 {
+    [Authorize]
     public class QuestionController : Controller
     {
         //
@@ -9,20 +12,53 @@ namespace Quiz.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var allQuestions = new List<Question>
+                {
+                    new Question
+                    {
+                        Id=1,
+                        Text = "What animal?",
+                        PossibleAnswers = new List<Answer>
+                            {
+                                new Answer {Text = "cat"},
+                                new Answer {Text = "dog"}
+                            }
+                    },
+                    new Question
+                    {
+                        Id = 2,
+                        Text = "What car?",
+                        PossibleAnswers = new List<Answer>
+                            {
+                                new Answer {Text = "Jaguar"},
+                                new Answer {Text = "Tata"}
+                            }
+                    }
+                };
+
+            return View(allQuestions);
         }
 
         //
         // GET: /Question/Details/5
-
         public ActionResult Details(int id)
         {
-            return View();
+            var question = new Question
+                {
+                    Id = 2,
+                    Text = "What car?",
+                    PossibleAnswers = new List<Answer>
+                        {
+                            new Answer {Text = "Jaguar"},
+                            new Answer {Text = "Tata"}
+                        }
+                };
+
+            return View(question);
         }
 
         //
         // GET: /Question/Create
-
         public ActionResult Create()
         {
             return View();
@@ -30,9 +66,8 @@ namespace Quiz.Web.Controllers
 
         //
         // POST: /Question/Create
-
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Question question)
         {
             try
             {
@@ -51,51 +86,32 @@ namespace Quiz.Web.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View();
+            var question = new Question
+                {
+                    Id = id, 
+                    Text = "What up?"
+                };
+
+            return View(question);
+        }
+        
+        [HttpDelete]
+        public ActionResult Update(Question question)
+        {
+            //Update question and redirect to listing
+
+            return RedirectToAction("Index");
+
         }
 
         //
-        // POST: /Question/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        // DELETE: /Question/Delete/5
+        [HttpDelete]
+        public void Delete(int id)
         {
-            try
-            {
-                // TODO: Add update logic here
+            //Delete question
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        //
-        // GET: /Question/Delete/5
-
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Question/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
