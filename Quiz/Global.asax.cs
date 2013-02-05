@@ -22,13 +22,6 @@ namespace Quiz.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
-
-            InitializeDatabaseContexts();
-        }
-
-        private void InitializeDatabaseContexts()
-        {
-            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<QuizContext>());
         }
     }
 }
