@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using Quiz.Domain;
@@ -44,9 +45,13 @@ namespace Quiz.Web.Infrastructure
 
         public void Delete(int questionId)
         {
-            var question = Questions.Single(q => q.Id == questionId);
+            throw new NotImplementedException("Delete");
+            //var question = Questions.Single(q => q.Id == questionId);
+            //Questions.Remove(question);
 
-            Questions.Remove(question);
+            //var currentQuestion = Questions.Find(questionId);
+            //Entry(currentQuestion).State = EntityState.Deleted;
+
         }
         
         IQueryable<Question> IQuizDataSource.Questions
