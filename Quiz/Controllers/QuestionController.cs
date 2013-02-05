@@ -1,40 +1,29 @@
-﻿using Quiz.Domain;
+﻿using System.Data.Entity;
+using System.Linq;
+using Quiz.Domain;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Quiz.Web.Models;
+using System;
 
 namespace Quiz.Web.Controllers
 {
     [Authorize]
     public class QuestionController : Controller
     {
+        private readonly IQuizDataSource _quizContext;
+
+        public QuestionController(IQuizDataSource quizContext)
+        {
+            _quizContext = quizContext;
+        }
+
         //
         // GET: /Question/
 
         public ActionResult Index()
         {
-            var allQuestions = new List<Question>
-                {
-                    new Question
-                    {
-                        Id=1,
-                        Text = "What animal?",
-                        PossibleAnswers = new List<Answer>
-                            {
-                                new Answer {Text = "cat"},
-                                new Answer {Text = "dog"}
-                            }
-                    },
-                    new Question
-                    {
-                        Id = 2,
-                        Text = "What car?",
-                        PossibleAnswers = new List<Answer>
-                            {
-                                new Answer {Text = "Jaguar"},
-                                new Answer {Text = "Tata"}
-                            }
-                    }
-                };
+            var allQuestions = _quizContext.Questions;
 
             return View(allQuestions);
         }
@@ -43,42 +32,72 @@ namespace Quiz.Web.Controllers
         // GET: /Question/Details/5
         public ActionResult Details(int id)
         {
-            var question = new Question
+            var question = _quizContext.Questions
+                                       .Include(q => q.PossibleAnswers)
+                                       .Single(q => q.Id.Equals(id));
+
+            var questionViewModel = new CreateQuestionViewModel
                 {
-                    Id = 2,
-                    Text = "What car?",
-                    PossibleAnswers = new List<Answer>
+                    CorrectAnswer = new CreateAnswerViewModel
                         {
-                            new Answer {Text = "Jaguar"},
-                            new Answer {Text = "Tata"}
-                        }
+                            Id = question.CorrectAnswer.Id,
+                            Text = question.CorrectAnswer.Text
+                        },
+                    FaultyAnswers = question.PossibleAnswers
+                        .Where(a => a.Id != question.CorrectAnswer.Id)
+                        .Select(a => new CreateAnswerViewModel { Id = a.Id, Text = a.Text })
+                        .ToList(),
+                    Text = question.Text
                 };
 
-            return View(question);
+            return View(questionViewModel);
         }
 
         //
         // GET: /Question/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new CreateQuestionViewModel());
         }
 
         //
         // POST: /Question/Create
         [HttpPost]
-        public ActionResult Create(Question question)
+        public ActionResult Create(CreateQuestionViewModel questionViewModel)
         {
+            if (!ModelState.IsValid)
+                return View(questionViewModel);
+
+            var correctAnswer = new Answer { Text = questionViewModel.CorrectAnswer.Text };
+            var possibleAnswers = new List<Answer>(questionViewModel.FaultyAnswers.Select(a =>
+                                                                                          new Answer { Text = a.Text }))
+                {
+                    correctAnswer
+                };
+
+            // Step 1 - sätt in alla svar
+            possibleAnswers.ForEach(a => _quizContext.Add(a));
+            _quizContext.Save();
+
+            var question = new Question
+                {
+                    CorrectAnswer = correctAnswer,
+                    PossibleAnswers = possibleAnswers,
+                    Text = questionViewModel.Text
+                };
+
+            _quizContext.Add(question);
+
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                _quizContext.Save();
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                return View(questionViewModel);
             }
+
+            return RedirectToAction("Index");
         }
 
         //
@@ -86,19 +105,64 @@ namespace Quiz.Web.Controllers
 
         public ActionResult Edit(int id)
         {
+            var question = _quizContext.Questions.Single(q => q.Id.Equals(id));
+
+            var questionViewModel = new CreateQuestionViewModel
+            {
+                CorrectAnswer = new CreateAnswerViewModel
+                    {
+                        Text = question.CorrectAnswer.Text,
+                        Id = question.CorrectAnswer.Id
+                    },
+                FaultyAnswers = question.PossibleAnswers
+                    .Where(a => a.Id != question.CorrectAnswer.Id)
+                    .Select(a => new CreateAnswerViewModel { Id = a.Id, Text = a.Text })
+                    .ToList(),
+                Text = question.Text
+            };
+
+            return View(questionViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(CreateQuestionViewModel questionViewModel)
+        {
+            if (!ModelState.IsValid)
+                return View("Edit", questionViewModel);
+
+            var possibleAnswers = questionViewModel.FaultyAnswers
+                                                   .Select(a =>
+                                                       new Answer { Id = a.Id, Text = a.Text }).ToList();
+
+            possibleAnswers.Add(
+                new Answer
+                {
+                    Id = questionViewModel.CorrectAnswer.Id,
+                    Text = questionViewModel.CorrectAnswer.Text
+                });
+
             var question = new Question
                 {
-                    Id = id, 
-                    Text = "What up?"
+                    CorrectAnswer = new Answer
+                        {
+                            Id = questionViewModel.CorrectAnswer.Id,
+                            Text = questionViewModel.CorrectAnswer.Text
+                        },
+                    Id = questionViewModel.Id,
+                    PossibleAnswers = possibleAnswers,
+                    Text = questionViewModel.Text
                 };
 
-            return View(question);
-        }
-        
-        [HttpDelete]
-        public ActionResult Update(Question question)
-        {
-            //Update question and redirect to listing
+            _quizContext.Update(question);
+
+            try
+            {
+                _quizContext.Save();
+            }
+            catch (Exception e)
+            {
+                return View("Edit", questionViewModel);
+            }
 
             return RedirectToAction("Index");
 
@@ -109,8 +173,16 @@ namespace Quiz.Web.Controllers
         [HttpDelete]
         public void Delete(int id)
         {
-            //Delete question
+            _quizContext.Delete(id);
 
+            try
+            {
+                _quizContext.Save();
+            }
+            catch (Exception e)
+            {
+                //Log?
+            }
 
         }
     }

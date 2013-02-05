@@ -1,19 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
 
 namespace Quiz.Web.Models
 {
-    public class UsersContext : DbContext
-    {
-        public UsersContext()
-            : base("OneDBToRuleThemAll")
-        {
-        }
-
-        public DbSet<UserProfile> UserProfiles { get; set; }
-    }
-
     [Table("UserProfile")]
     public class UserProfile
     {

@@ -1,4 +1,4 @@
-﻿@model Quiz.Domain.Question
+﻿@model Quiz.Web.Models.CreateQuestionViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,13 +11,36 @@
     <legend>Question</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Text)
+        @Html.DisplayNameFor(model => model.Text)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Text)
     </div>
 </fieldset>
+
+<fieldset>
+    <legend>Correct answer</legend>
+    
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.CorrectAnswer.Text)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CorrectAnswer.Text)
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Faulty answers</legend>
+
+    <ul>
+        @foreach (var answer in Model.FaultyAnswers)
+        {
+            <li>@answer.Text</li>
+        }
+    </ul>
+
+</fieldset>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

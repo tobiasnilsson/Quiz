@@ -1,8 +1,10 @@
-﻿using System.Web.Http;
+﻿using System.Data.Entity;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Quiz.Web.App_Start;
+using Quiz.Web.Infrastructure;
 
 namespace Quiz.Web
 {
@@ -20,6 +22,13 @@ namespace Quiz.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            InitializeDatabaseContexts();
+        }
+
+        private void InitializeDatabaseContexts()
+        {
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<QuizContext>());
         }
     }
 }

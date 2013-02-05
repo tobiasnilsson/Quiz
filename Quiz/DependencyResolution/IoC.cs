@@ -16,10 +16,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using Quiz.Domain;
+using Quiz.Web.Infrastructure;
 using StructureMap;
-namespace Quiz.Web.DependencyResolution {
-    public static class IoC {
-        public static IContainer Initialize() {
+namespace Quiz.Web.DependencyResolution
+{
+    public static class IoC
+    {
+        public static IContainer Initialize()
+        {
             ObjectFactory.Initialize(x =>
                         {
                             x.Scan(scan =>
@@ -27,7 +32,7 @@ namespace Quiz.Web.DependencyResolution {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                     });
-            //                x.For<IExample>().Use<Example>();
+                            x.For<IQuizDataSource>().Use<QuizContext>();
                         });
             return ObjectFactory.Container;
         }

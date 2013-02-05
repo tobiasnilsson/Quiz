@@ -1,11 +1,12 @@
 ﻿@model Quiz.Web.Models.CreateQuestionViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Edit</h2>
+
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -26,6 +27,7 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.CorrectAnswer.Text)
             @Html.ValidationMessageFor(model => model.CorrectAnswer.Text)
+            @Html.HiddenFor(model=>model.CorrectAnswer.Id)
         </div>
 
         @Html.LabelFor(model=>model.FaultyAnswers)
@@ -33,15 +35,17 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.FaultyAnswers[0].Text)
             @Html.ValidationMessageFor(model => model.FaultyAnswers[0].Text)
+            @Html.HiddenFor(model=>model.FaultyAnswers[0].Id)
         </div>
 
         <div class="editor-field">
             @Html.EditorFor(model => model.FaultyAnswers[1].Text)
             @Html.ValidationMessageFor(model => model.FaultyAnswers[1].Text)
+            @Html.HiddenFor(model=>model.FaultyAnswers[1].Id)
         </div>
         
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Save" />
         </p>
     </fieldset>
 }

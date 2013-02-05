@@ -7,6 +7,7 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using Quiz.Web.Filters;
+using Quiz.Web.Infrastructure;
 using Quiz.Web.Models;
 using WebMatrix.WebData;
 
