@@ -83,7 +83,8 @@ namespace Quiz.Web.Controllers
                 {
                     CorrectAnswer = correctAnswer,
                     PossibleAnswers = possibleAnswers,
-                    Text = questionViewModel.Text
+                    Text = questionViewModel.Text,
+                    UpdateStamp = DateTime.Now
                 };
 
             _quizContext.Add(question);
@@ -150,7 +151,8 @@ namespace Quiz.Web.Controllers
                         },
                     Id = questionViewModel.Id,
                     PossibleAnswers = possibleAnswers,
-                    Text = questionViewModel.Text
+                    Text = questionViewModel.Text,
+                    UpdateStamp = DateTime.Now
                 };
 
             _quizContext.Update(question);

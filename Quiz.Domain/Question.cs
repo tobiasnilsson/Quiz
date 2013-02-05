@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Quiz.Domain
 {
@@ -8,5 +9,6 @@ namespace Quiz.Domain
         public virtual string Text { get; set; }
         public virtual ICollection<Answer> PossibleAnswers { get; set; }
         public virtual Answer CorrectAnswer { get; set; }
+        public DateTime? UpdateStamp { get; set; }
     }
 }

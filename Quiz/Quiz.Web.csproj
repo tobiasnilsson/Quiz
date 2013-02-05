@@ -184,6 +184,18 @@
     </Compile>
     <Compile Include="Infrastructure\QuizContext.cs" />
     <Compile Include="Infrastructure\UsersContext.cs" />
+    <Compile Include="Migrations\201302051223013_First.cs" />
+    <Compile Include="Migrations\201302051223013_First.Designer.cs">
+      <DependentUpon>201302051223013_First.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201302051251230_QuestionInsertStamp.cs" />
+    <Compile Include="Migrations\201302051251230_QuestionInsertStamp.Designer.cs">
+      <DependentUpon>201302051251230_QuestionInsertStamp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201302051257450_QuestionUpdateStamp.cs" />
+    <Compile Include="Migrations\201302051257450_QuestionUpdateStamp.Designer.cs">
+      <DependentUpon>201302051257450_QuestionUpdateStamp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateAnswerViewModel.cs" />
@@ -328,6 +340,17 @@
       <Project>{22CD6CAD-B985-4B8F-BF78-A660287A1BC3}</Project>
       <Name>Quiz.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201302051223013_First.resx">
+      <DependentUpon>201302051223013_First.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201302051251230_QuestionInsertStamp.resx">
+      <DependentUpon>201302051251230_QuestionInsertStamp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201302051257450_QuestionUpdateStamp.resx">
+      <DependentUpon>201302051257450_QuestionUpdateStamp.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
